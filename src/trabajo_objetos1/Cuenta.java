@@ -5,7 +5,6 @@ public class Cuenta {
 	private String clave;
 	private double saldo;
 	
-	
 	public Cuenta(String mail, String clave, double saldo) {
 		super();
 		this.mail = mail;

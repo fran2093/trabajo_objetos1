@@ -1,13 +1,16 @@
 package trabajo_objetos1;
 
-public class Cliente {
+public class Cliente extends Cuenta {
 	private String nombre;
 	private String apellido;
 	private String numero;
 	private String direccion;
 	
-	public Cliente(String nombre, String apellido, String numero, String direccion) {
-		super();
+	
+
+	public Cliente(String mail, String clave, double saldo, String nombre, String apellido, String numero,
+			String direccion) {
+		super(mail, clave, saldo);
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.numero = numero;
