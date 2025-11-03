@@ -1,6 +1,6 @@
 package trabajo_objetos1;
 
-public class Usuario {
+public abstract class Usuario {
 	private String nombre;
 	private String apellido;
 	private String token;
@@ -46,6 +46,7 @@ public class Usuario {
 		this.clave = clave;
 	}
 	
+	public abstract void verMenu();
 	
 	
 }
