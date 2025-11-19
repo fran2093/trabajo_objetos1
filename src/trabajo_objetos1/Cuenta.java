@@ -5,14 +5,13 @@ import javax.swing.JOptionPane;
 public class Cuenta {
 	private String mail;
 	private String clave;
-	private double saldo;
+	private Usuario usuario;
 	
-	
-	public Cuenta(String mail, String clave, double saldo) {
+	public Cuenta(String mail, String clave, Usuario usuario) {
 		super();
 		this.mail = mail;
 		this.clave = clave;
-		this.saldo = saldo;
+		this.usuario = usuario;
 	}
 
     public void depositar(double monto) {
@@ -61,14 +60,13 @@ public class Cuenta {
 		this.clave = clave;
 	}
 
-	public double getSaldo() {
-		return saldo;
+	public Usuario getUsuario() {
+		return usuario;
 	}
 
-	public void setSaldo(double saldo) {
-		this.saldo = saldo;
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
-	
 	
 	
 	
