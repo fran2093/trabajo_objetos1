@@ -9,7 +9,6 @@ public class Administrador extends Usuario{
 
 	@Override
 	public void verMenu() {
-		// TODO Auto-generated method stub
 		
 	}
 	

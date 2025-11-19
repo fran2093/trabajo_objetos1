@@ -6,15 +6,23 @@ public class Main {
 
     public static void main(String[] args) {
 
-       
+        Cliente cliente1 = new Cliente("Francisco", "Rod", "12h4k5093s23","0987");
         Cuenta cuenta1 = new Cuenta("a@mail.com", "1234", 2000);
         //Cuenta cuenta2 = new Cuenta("b@mail.com", "5678", 500);
 
 
+        Boolean register = false;
+        do {
+        
+        }
+        while(register = true);
+        
+        
         String[] opciones = {
                 "Depositar",
                 "Retirar",
                 "Transferir",
+                
                 "Mostrar saldo",
                 "Salir"
         };
