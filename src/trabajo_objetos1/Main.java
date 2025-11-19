@@ -8,7 +8,7 @@ public class Main {
 
        
         Cuenta cuenta1 = new Cuenta("a@mail.com", "1234", 2000);
-        Cuenta cuenta2 = new Cuenta("b@mail.com", "5678", 500);
+        //Cuenta cuenta2 = new Cuenta("b@mail.com", "5678", 500);
 
         String[] opciones = {
                 "Depositar",
