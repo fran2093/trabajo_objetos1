@@ -1,17 +1,18 @@
 package trabajo_objetos1;
 
-public abstract class Usuario {
+public class Usuario{
+	
 	private String nombre;
 	private String apellido;
-	private String token;
 	private String clave;
+	private Rol rol;
 	
-	public Usuario(String nombre, String apellido, String token, String clave) {
+	public Usuario(String nombre, String apellido, String clave, Rol rol) {
 		super();
 		this.nombre = nombre;
 		this.apellido = apellido;
-		this.token = token;
 		this.clave = clave;
+		this.rol = rol;
 	}
 
 	public String getNombre() {
@@ -30,14 +31,6 @@ public abstract class Usuario {
 		this.apellido = apellido;
 	}
 
-	public String getToken() {
-		return token;
-	}
-
-	public void setToken(String token) {
-		this.token = token;
-	}
-
 	public String getClave() {
 		return clave;
 	}
@@ -46,7 +39,15 @@ public abstract class Usuario {
 		this.clave = clave;
 	}
 	
-	public abstract void verMenu();
+	public Rol getRol() {
+		return rol;
+	}
+	
+	public void setRol(Rol rol) {
+		this.rol = rol;
+	}
+
+	public void verMenu()
 	
 	
 }
