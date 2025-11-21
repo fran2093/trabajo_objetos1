@@ -7,9 +7,9 @@ import java.util.List;
 
 public class Cuenta {
 
-    private String mail;
+	private Usuario usuario;
+	int CVU = (int) (Math.random() * 900500401);
     private int token; // Token de 3 dígitos para transacciones
-    private Usuario usuario;
     private double saldo;
     
     // Lista para guardar las transacciones (facturas)
@@ -22,9 +22,10 @@ public class Cuenta {
     }
 
     // CONSTRUCTOR
-    public Cuenta(String mail, Usuario usuario) {
-        this.mail = mail;
+    public Cuenta(Usuario usuario, int CVU) {
+          	
         this.usuario = usuario;
+        this.CVU = CVU;
         this.saldo = 0.0; 
         this.token = generarNuevoToken(); 
     }
@@ -69,7 +70,7 @@ public class Cuenta {
         saldo += monto;
         
         // REGISTRO DE TRANSACCIÓN
-        Transaccion t = new Transaccion(TipoTransaccion.DEPOSITO, monto, this.mail);
+        Transaccion t = new Transaccion(TipoTransaccion.DEPOSITO, monto, this.CVU); //Esto se tendria que manejar con el CVU
         historialTransacciones.add(t);
         
         JOptionPane.showMessageDialog(null, t.getDetalle() + "\nNuevo saldo: " + saldo);
@@ -133,12 +134,16 @@ public class Cuenta {
     public Usuario getUsuario() {
         return usuario;
     }
-    
-    public String getMail() {
-        return mail;
-    }
 
-    public List<Transaccion> getHistorialTransacciones() {
+    public int getCVU() {
+		return CVU;
+	}
+
+	public void setCVU(int cVU) {
+		CVU = cVU;
+	}
+
+	public List<Transaccion> getHistorialTransacciones() {
         return historialTransacciones;
     }
 }

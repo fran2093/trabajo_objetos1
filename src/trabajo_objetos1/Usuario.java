@@ -1,11 +1,16 @@
 package trabajo_objetos1;
 
+import javax.swing.JOptionPane;
+
 public class Usuario{
 	
 	private String nombre;
 	private String apellido;
 	private String clave;
 	private Rol rol;
+	private Cuenta cuenta;
+
+
 	
 	public Usuario(String nombre, String apellido, String clave, Rol rol) {
 		super();
@@ -38,7 +43,7 @@ public class Usuario{
 	public void setClave(String clave) {
 		this.clave = clave;
 	}
-	
+
 	public Rol getRol() {
 		return rol;
 	}
@@ -46,8 +51,149 @@ public class Usuario{
 	public void setRol(Rol rol) {
 		this.rol = rol;
 	}
+	
+	public Cuenta getCuenta() {
+		return cuenta;
+	}
 
-	public void verMenu()
+	public void setCuenta(Cuenta cuenta) {
+		this.cuenta = cuenta;
+	}
+
+	public static Usuario register() {
+		JOptionPane.showMessageDialog(
+			    null,
+			    "💠 UMBRELLA HOME BANKING 💠\n\n"
+			  + "¡Bienvenido!\n"
+			  + "Registrate para formar parte de nuestra plataforma.\n\n"
+			  + "✔ Cuentas Corrientes\n"
+			  + "✔ Cajas de Ahorro\n"
+			  + "✔ Intereses y Beneficios\n"
+			  + "Comenzá a operar de manera fácil y segura."
+			);
+
+		
+		String nombre = JOptionPane.showInputDialog("Ingrese su nombre: ");
+		String apellido = JOptionPane.showInputDialog("Ingrese su apellido: ");
+		String clave = JOptionPane.showInputDialog("Ingrese su clave: ");
+		
+		
+	    String[] roles = {"Cliente", "Administrador"};
+		
+		int opcion = JOptionPane.showOptionDialog(
+	            null,
+	            "Seleccione su rol:",
+	            "Registrar Usuario",
+	            0,
+	            0,
+	            null,
+	            roles,
+	            roles[0]
+	    );
+
+	    Rol rolElegido;
+
+	    if(opcion == 0) {
+	        rolElegido = Rol.CLIENTE;
+	    } else {
+	        rolElegido = Rol.ADMINISTRADOR;
+	    }
+	    
+	    return new Usuario(nombre, apellido, clave, rolElegido);
+		
+       }
+	
+
+	
+	
+	public void verMenu() {
+		if(rol == Rol.CLIENTE) {
+	        String[] opciones = {
+	                "Depositar",
+	                "Retirar",
+	                "Transferir",            
+	                "Mostrar saldo",
+	                "Salir"
+	        };
+
+	        int elegido = -1;
+
+	        while (elegido != 4) {
+
+	            elegido = JOptionPane.showOptionDialog(
+	                    null,
+	                    "Informacion Personal: " + nombre + " " + apellido + "\n" + "CVU: Traer CVU de la clase Cuenta" ,
+	                    "Interfaz Cliente",
+	                    0,
+	                    0,
+	                    null,
+	                    opciones,
+	                    opciones[0]
+	            );
+
+	            switch (elegido) {
+
+	                case 0: // depositar
+	                    
+	                case 1: // retirar                          
+
+	                case 2: // esto va a ser transferir But nel lo hice
+
+	                case 3: // show saldo     
+
+	                case 4: // salir del menu 
+	                default:
+	                    JOptionPane.showMessageDialog(null, "Testing...");
+	                    break;
+	            }	            	        
+	            
+	        }
+		} else {
+			String[] opciones = {
+	                "Test",
+	                "Test",
+	                "Test",
+	                
+	                "Test",
+	                "Salir"
+	        };
+
+	        int elegido = -1;
+
+	        while (elegido != 4) {
+
+	            elegido = JOptionPane.showOptionDialog(
+	                    null,
+	                    "Seleccione una operacion",
+	                    "Interfaz Administrador",
+	                    0,
+	                    0,
+	                    null,
+	                    opciones,
+	                    opciones[0]
+	            );
+
+	            switch (elegido) {
+
+	                case 0: // depositar
+	                    
+	                case 1: // retirar                          
+
+	                case 2: // esto va a ser transferir But nel lo hice
+
+	                case 3: // show saldo     
+
+	                case 4: // salir del menu 
+	                default:
+	                    JOptionPane.showMessageDialog(null, "Testing...");
+	                    break;
+	            }	            	        
+	            
+	        }
+			
+		}
+		
+	}
 	
 	
 }
