@@ -15,49 +15,32 @@ public abstract class Validaciones {
 		} while (dato.isEmpty());
 		return dato;
 	}
-	public static int ValidarInt(String mensaje) {
-		String dato ="Gamaliel";
+
+	public static double ValidarDouble(String mensaje) {
 		
+		String dato;
 		boolean flag ;
 		do {
 			flag = true;
 			dato = JOptionPane.showInputDialog(mensaje);
 
-			if (dato.isEmpty()) {
-				JOptionPane.showMessageDialog(null, "Error");
-				flag = false;
-			}else {
-				for (int i = 0; i < dato.length(); i++) {
-					if (!Character.isDigit(dato.charAt(i)) && dato.charAt(0) != '-') {
-						JOptionPane.showMessageDialog(null, "No puede ser un dato no numerico");
-						flag = false;
-						break;
-					}
-				}
-			}
-		} while (flag == false);
-		return Integer.parseInt(dato) ;
-	}
-	
-	public static double IngresarDouble(String mensaje) {
-		String dato;
-		double numero = 0.0;
-		boolean flag = false;
-		
-		do {
-			dato = ValidarString(mensaje);
-			
-			try {
-				numero = Double.parseDouble(dato);
-				flag = true;
-			} catch (NumberFormatException e) {
-				JOptionPane.showMessageDialog(null, "Error: Por favor, ingrese un monto numérico válido (use punto o coma según su configuración local).");
-				flag = false;
-			}
-			
-		} while (!flag);
-		
-		return numero;
-	}
-	
+			if (dato == null || dato.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Error: Debe ingresar un valor.");
+                flag = false;
+            } else {
+                try {
+                    double valor = Double.parseDouble(dato);
+                    if (valor <= 0) {
+                        JOptionPane.showMessageDialog(null, "El monto debe ser positivo.");
+                        flag = false;
+                    }
+                    
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Error: Ingrese un dato numérico válido (ej. 100.50).");
+                    flag = false;
+                }
+            }
+        } while (!flag);
+       return Double.parseDouble(dato);
+    }
 }

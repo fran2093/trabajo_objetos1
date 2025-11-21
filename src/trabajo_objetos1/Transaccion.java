@@ -9,26 +9,26 @@ public class Transaccion {
     private TipoTransaccion tipo; 
     private double monto;
     private LocalDateTime fechaHora;
-    private String cuentaOrigen;
-    private String cuentaDestino;
+    private int CVUorigen;
+    private int CVUdestino;
 
     
     // constructor para retiros y/o depositos
-    public Transaccion(TipoTransaccion tipo, double monto, String cuentaOrigen) {
+    public Transaccion(TipoTransaccion tipo, double monto, int CVUorigen) {
         this.tipo = tipo; 
         this.monto = monto;
         this.fechaHora = LocalDateTime.now();
-        this.cuentaOrigen = cuentaOrigen;
-        this.cuentaDestino = null;
+        this.CVUorigen = CVUorigen;
+        this.CVUdestino = 0;
     }
 
     // constructor esta vez para transferencias
-    public Transaccion(double monto, String cuentaOrigen, String cuentaDestino) {
+    public Transaccion(double monto, int CVUorigen, int CVUdestino) {
         this.tipo = TipoTransaccion.TRANSFERENCIA;
         this.monto = monto;
         this.fechaHora = LocalDateTime.now();
-        this.cuentaOrigen = cuentaOrigen;
-        this.cuentaDestino = cuentaDestino;
+        this.CVUorigen = CVUorigen;
+        this.CVUdestino = CVUdestino;
     }
 
     //metodo para obtener la factura/detalle de cualquier transaccion
@@ -40,11 +40,11 @@ public class Transaccion {
                          //con el string format logramos que solo se muestren dos decimales de la transaccion en cuestion, ahorrandonos el problema de mostrar numeros excesivamente largos o sin redondear.
                          "Monto: $" + String.format("%.2f", this.monto) + "\n" +
                          "Fecha/Hora: " + this.fechaHora.format(formatter) + "\n" +
-                         "Cuenta Origen: " + this.cuentaOrigen + "\n";
+                         "Cuenta Origen: " + this.CVUdestino + "\n";
         
         //en el caso de ser una transferencia mostramos tambien el detalle de a qué cuenta se ha transferido, sino este bloque se omite
-        if (this.cuentaDestino != null) {
-            detalle += "Cuenta Destino: " + this.cuentaDestino + "\n";
+        if (this.CVUdestino != 0) {
+            detalle += "Cuenta Destino: " + this.CVUdestino + "\n";
         }
         
         return detalle;

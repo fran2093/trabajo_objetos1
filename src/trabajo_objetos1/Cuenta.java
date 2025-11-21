@@ -8,35 +8,34 @@ import java.util.List;
 public class Cuenta {
 
 	private Usuario usuario;
-	int CVU = (int) (Math.random() * 900500401);
-    private int token; // Token de 3 dígitos para transacciones
+	private int CVU;
+    private int token;
     private double saldo;
     
-    // Lista para guardar las transacciones (facturas)
     private List<Transaccion> historialTransacciones = new ArrayList<>();
 
-    // Método privado para generar un nuevo token (de 100 a 999)
     private int generarNuevoToken() {
         Random random = new Random();
         return random.nextInt(900) + 100;
     }
-
+    
+    private int generarCVU() {
+        Random random = new Random();
+        return random.nextInt(900000000) + 100000000;
+    }
+    
     // CONSTRUCTOR
-    public Cuenta(Usuario usuario, int CVU) {
+    public Cuenta(Usuario usuario) {
           	
         this.usuario = usuario;
-        this.CVU = CVU;
+        this.CVU = generarCVU();
         this.saldo = 0.0; 
         this.token = generarNuevoToken(); 
     }
 
-    /**
-     * Método auxiliar que solicita el token al usuario y lo compara.
-     * @return true si el token es correcto, false si es incorrecto.
-     */
     private boolean validarToken() {
         try {
-            // Usamos IngresarString para evitar errores con JOptionPane.showInputDialog
+
             String tokenIngresadoStr = Validaciones.ValidarString(
                 "Ingrese el token de 3 dígitos para confirmar la operación:");
             
@@ -54,57 +53,40 @@ public class Cuenta {
         }
     }
 
-    /**
-     * Pide el token de la cuenta y realiza el depósito si es correcto.
-     */
-    public void depositar(double monto) {
-        if (monto <= 0) {
-            JOptionPane.showMessageDialog(null, "Monto inválido para depósito.");
-            return;
-        }
-        
+    public void depositar(String mensajeInput) {
+    	
+    	double monto = Validaciones.ValidarDouble(mensajeInput);
+    	
         if (!validarToken()) {
             return; 
         }
 
         saldo += monto;
         
-        // REGISTRO DE TRANSACCIÓN
-        Transaccion t = new Transaccion(TipoTransaccion.DEPOSITO, monto, this.CVU); //Esto se tendria que manejar con el CVU
+        Transaccion t = new Transaccion(TipoTransaccion.DEPOSITO, monto, this.CVU);
         historialTransacciones.add(t);
         
         JOptionPane.showMessageDialog(null, t.getDetalle() + "\nNuevo saldo: " + saldo);
     }
     
-    /**
-     * Realiza un depósito sin pedir ni validar el token. Usado para transferencias entrantes.
-     */
-    public void depositarSinValidacion(double monto) {
-        if (monto > 0) {
-            saldo += monto;
-            // No se muestra JOptionPane para no interrumpir el flujo de la transferencia.
-        }
+    public void depositarSinValidacion(String mensajeInput) {
+    	
+    	double monto = Validaciones.ValidarDouble(mensajeInput);
+    	
+        saldo += monto;
     }
 
-    /**
-     * Pide el token de la cuenta y realiza el retiro si es correcto y hay saldo.
-     * @return true si el retiro fue exitoso, false en caso contrario.
-     */
-    public boolean retirar(double monto) {
-        if (monto > saldo || monto <= 0) {
-            JOptionPane.showMessageDialog(null, 
-                "No es posible retirar ese monto o el monto es inválido.");
-            return false;
-        }
+    public boolean retirar(String mensajeInput) {
+
+    	double monto = Validaciones.ValidarDouble(mensajeInput);
         
         if (!validarToken()) {
             return false;
         }
         
-        saldo -= monto;
+        saldo -= monto ;
 
-        // REGISTRO DE TRANSACCIÓN
-        Transaccion t = new Transaccion(TipoTransaccion.RETIRO, monto, this.mail);
+        Transaccion t = new Transaccion(TipoTransaccion.RETIRO, monto, this.CVU);
         historialTransacciones.add(t);
         
         JOptionPane.showMessageDialog(null, t.getDetalle() + "\nNuevo saldo: " + saldo);
@@ -139,8 +121,8 @@ public class Cuenta {
 		return CVU;
 	}
 
-	public void setCVU(int cVU) {
-		CVU = cVU;
+	public void setCVU(int cvu) {
+		CVU = cvu;
 	}
 
 	public List<Transaccion> getHistorialTransacciones() {

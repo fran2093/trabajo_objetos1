@@ -8,9 +8,7 @@ public class Usuario{
 	private String apellido;
 	private String clave;
 	private Rol rol;
-	private Cuenta cuenta;
-
-
+	private String mail;
 	
 	public Usuario(String nombre, String apellido, String clave, Rol rol) {
 		super();
@@ -18,6 +16,7 @@ public class Usuario{
 		this.apellido = apellido;
 		this.clave = clave;
 		this.rol = rol;
+		this.mail = mail;
 	}
 
 	public String getNombre() {
@@ -52,18 +51,18 @@ public class Usuario{
 		this.rol = rol;
 	}
 	
-	public Cuenta getCuenta() {
-		return cuenta;
+	public String getMail() {
+		return mail;
 	}
 
-	public void setCuenta(Cuenta cuenta) {
-		this.cuenta = cuenta;
+	public void setMail(String mail) {
+		this.mail = mail;
 	}
 
 	public static Usuario register() {
 		JOptionPane.showMessageDialog(
 			    null,
-			    "💠 UMBRELLA HOME BANKING 💠\n\n"
+			    "💠 UMBRELLA WALLET 💠\n\n"
 			  + "¡Bienvenido!\n"
 			  + "Registrate para formar parte de nuestra plataforma.\n\n"
 			  + "✔ Cuentas Corrientes\n"
@@ -73,9 +72,11 @@ public class Usuario{
 			);
 
 		
-		String nombre = JOptionPane.showInputDialog("Ingrese su nombre: ");
+		String nombre = Validaciones.ValidarString("Ingrese Nombre: ");
 		String apellido = JOptionPane.showInputDialog("Ingrese su apellido: ");
+		String mail = JOptionPane.showInputDialog("Ingrese su mail: ");
 		String clave = JOptionPane.showInputDialog("Ingrese su clave: ");
+
 		
 		
 	    String[] roles = {"Cliente", "Administrador"};
@@ -101,6 +102,8 @@ public class Usuario{
 	    
 	    return new Usuario(nombre, apellido, clave, rolElegido);
 		
+	    
+	    
        }
 	
 
@@ -122,7 +125,7 @@ public class Usuario{
 
 	            elegido = JOptionPane.showOptionDialog(
 	                    null,
-	                    "Informacion Personal: " + nombre + " " + apellido + "\n" + "CVU: Traer CVU de la clase Cuenta" ,
+	                    "Informacion Personal: " + nombre + " " + apellido + "\n" + "CVU: " + this.cuenta.getCVU() ,
 	                    "Interfaz Cliente",
 	                    0,
 	                    0,
