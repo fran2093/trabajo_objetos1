@@ -9,14 +9,17 @@ public class Usuario{
 	private String clave;
 	private Rol rol;
 	private String mail;
+	private BaseDeDatos bd;
+
 	
-	public Usuario(String nombre, String apellido, String clave, Rol rol) {
+	public Usuario(String nombre, String apellido, String mail, String clave, Rol rol) {
 		super();
 		this.nombre = nombre;
 		this.apellido = apellido;
+		this.mail = mail;
 		this.clave = clave;
 		this.rol = rol;
-		this.mail = mail;
+		
 	}
 
 	public String getNombre() {
@@ -58,7 +61,12 @@ public class Usuario{
 	public void setMail(String mail) {
 		this.mail = mail;
 	}
-
+	
+	//cada usuario tiene su registro en bd, esto es para que lo pueda ver el admin
+	public void setBaseDeDatos(BaseDeDatos base) {
+	    this.bd = base;
+	}
+	
 	public static Usuario register() {
 		JOptionPane.showMessageDialog(
 			    null,
@@ -73,7 +81,7 @@ public class Usuario{
 
 		
 		String nombre = Validaciones.ValidarString("Ingrese Nombre: ");
-		String apellido = JOptionPane.showInputDialog("Ingrese su apellido: ");
+		String apellido = Validaciones.ValidarString("Ingrese su apellido: ");
 		String mail = JOptionPane.showInputDialog("Ingrese su mail: ");
 		String clave = JOptionPane.showInputDialog("Ingrese su clave: ");
 
@@ -100,7 +108,7 @@ public class Usuario{
 	        rolElegido = Rol.ADMINISTRADOR;
 	    }
 	    
-	    return new Usuario(nombre, apellido, clave, rolElegido);
+	    return new Usuario(nombre, apellido, mail, clave, rolElegido);
 		
 	    
 	    
@@ -125,7 +133,7 @@ public class Usuario{
 
 	            elegido = JOptionPane.showOptionDialog(
 	                    null,
-	                    "Informacion Personal: " + nombre + " " + apellido + "\n" + "CVU: " + this.cuenta.getCVU() ,
+	                    "Informacion Personal: " + nombre + " " + apellido + "\n" + "CVU: 67" ,
 	                    "Interfaz Cliente",
 	                    0,
 	                    0,
@@ -153,7 +161,7 @@ public class Usuario{
 	        }
 		} else {
 			String[] opciones = {
-	                "Test",
+	                "Ver Usuarios",
 	                "Test",
 	                "Test",
 	                
@@ -167,7 +175,7 @@ public class Usuario{
 
 	            elegido = JOptionPane.showOptionDialog(
 	                    null,
-	                    "Seleccione una operacion",
+	                    "Informacion Personal: " + nombre + " " + apellido + "\n" + "CVU: 67" ,
 	                    "Interfaz Administrador",
 	                    0,
 	                    0,
@@ -178,8 +186,13 @@ public class Usuario{
 
 	            switch (elegido) {
 
-	                case 0: // depositar
-	                    
+	                case 0: // ver niggas
+	                	JOptionPane.showMessageDialog(
+	                            null,
+	                            bd.verUsuarios(),
+	                            "Usuarios Registrados",
+	                            JOptionPane.INFORMATION_MESSAGE
+	                        );
 	                case 1: // retirar                          
 
 	                case 2: // esto va a ser transferir But nel lo hice

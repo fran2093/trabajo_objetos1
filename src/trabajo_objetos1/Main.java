@@ -5,9 +5,15 @@ public class Main {
 
     public static void main(String[] args) {
        	   	
-    	Usuario u1 = Usuario.register();
-    	u1.verMenu();
-    	      
+    	BaseDeDatos bd = new BaseDeDatos();
+
+    	// registro de usuario
+    	Usuario u = Usuario.register();
+    	u.verMenu();
+    	// guardar user en la bd
+    	bd.agregarUsuario(u);
        
     }
+  
+    
 }
