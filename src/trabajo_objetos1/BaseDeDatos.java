@@ -7,19 +7,62 @@ import java.util.List;
 public class BaseDeDatos {
 
 	private  List<Usuario> listaUsuarios = new ArrayList<>();
+	private List<Cuenta> listaCuentas = new ArrayList<>();
 	
 	 public BaseDeDatos(){
-		 listaUsuarios.add(new Usuario("Bob", "Marley", "Bob@gmail.com", "MedicationMakesMeHigh", Rol.CLIENTE));
-		 listaUsuarios.add(new Usuario("Mario", "Rod", "Rod@gmail.com", "QuieroHamburgesas", Rol.CLIENTE));
+		 Usuario bob = new Usuario("Bob", "Marley", "Bob@gmail.com", "MedicationMakesMeHigh", Rol.CLIENTE);
+		 Usuario mario = new Usuario("Mario", "Rod", "Rod@gmail.com", "QuieroHamburgesas", Rol.CLIENTE);
+		 
+		 listaUsuarios.add(bob);
+         listaUsuarios.add(mario);
+         listaCuentas.add(new Cuenta(bob));
+         listaCuentas.add(new Cuenta(mario));
 	 }
-	
 
-	
-    private List<Cuenta> listaCuentas = new ArrayList<>();
+	 public void agregarUsuarioYCuenta(Usuario u) {
+	        listaUsuarios.add(u);
+	        // crea automáticamente una cuenta  para un CLIENTE
+	        if (u.getRol() == Rol.CLIENTE) {
+	            listaCuentas.add(new Cuenta(u));
+	        }
+	    }
     
-	
-    public void agregarUsuario(Usuario u) {
-    	listaUsuarios.add(u);
+	 public Cuenta buscarCuentaPorUsuario(Usuario usuario) {
+		    
+		    String mailBuscado = usuario.getMail(); // usa el mail para filtrar, este nos sirve como pk.
+		    
+		    for (Cuenta cuenta : listaCuentas) {
+		        
+		        // compara el mail del usuario con el de la cuenta.
+		        if (cuenta.getUsuario().getMail().equals(mailBuscado)) { 
+		            return cuenta;
+		        }
+		    }
+
+		    return null; 
+		}
+    
+    public Cuenta buscarCuentaPorCVU(int cvu) {
+        for (Cuenta cuenta : listaCuentas) {
+            if (cuenta.getCVU() == cvu) {
+                return cuenta;
+            }
+        }
+        return null;
+    }
+    
+    public String listarCuentasConCVU() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("--- CUENTAS REGISTRADAS EN UMBRELLA ---\n\n");
+
+        for (Cuenta c : listaCuentas) {
+            String nombreUsuario = c.getUsuario().getNombre();
+            sb.append("Usuario: ").append(nombreUsuario).append("\n");
+            sb.append("CVU: ").append(c.getCVU()).append("\n");
+            sb.append("---------------------------\n");
+        }
+
+        return sb.toString();
     }
     
     public String verUsuarios() {
@@ -34,8 +77,6 @@ public class BaseDeDatos {
             sb.append("Rol: ").append(u.getRol()).append("\n");
             sb.append("---------------------------\n");
         }
-
         return sb.toString();
     }
-    
 }

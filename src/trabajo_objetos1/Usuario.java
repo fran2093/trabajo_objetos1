@@ -10,8 +10,8 @@ public class Usuario{
 	private Rol rol;
 	private String mail;
 	private BaseDeDatos bd;
+	private Cuenta cuenta;
 
-	
 	public Usuario(String nombre, String apellido, String mail, String clave, Rol rol) {
 		super();
 		this.nombre = nombre;
@@ -19,54 +19,8 @@ public class Usuario{
 		this.mail = mail;
 		this.clave = clave;
 		this.rol = rol;
-		
 	}
 
-	public String getNombre() {
-		return nombre;
-	}
-
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-
-	public String getApellido() {
-		return apellido;
-	}
-
-	public void setApellido(String apellido) {
-		this.apellido = apellido;
-	}
-
-	public String getClave() {
-		return clave;
-	}
-
-	public void setClave(String clave) {
-		this.clave = clave;
-	}
-
-	public Rol getRol() {
-		return rol;
-	}
-	
-	public void setRol(Rol rol) {
-		this.rol = rol;
-	}
-	
-	public String getMail() {
-		return mail;
-	}
-
-	public void setMail(String mail) {
-		this.mail = mail;
-	}
-	
-	//cada usuario tiene su registro en bd, esto es para que lo pueda ver el admin
-	public void setBaseDeDatos(BaseDeDatos base) {
-	    this.bd = base;
-	}
-	
 	public static Usuario register() {
 		JOptionPane.showMessageDialog(
 			    null,
@@ -79,13 +33,10 @@ public class Usuario{
 			  + "Comenzá a operar de manera fácil y segura."
 			);
 
-		
 		String nombre = Validaciones.ValidarString("Ingrese Nombre: ");
 		String apellido = Validaciones.ValidarString("Ingrese su apellido: ");
-		String mail = JOptionPane.showInputDialog("Ingrese su mail: ");
-		String clave = JOptionPane.showInputDialog("Ingrese su clave: ");
-
-		
+		String mail = Validaciones.ValidarMail("Ingrese su mail: ");
+		String clave = Validaciones.ValidarClave("Ingrese su clave: ");
 		
 	    String[] roles = {"Cliente", "Administrador"};
 		
@@ -110,20 +61,20 @@ public class Usuario{
 	    
 	    return new Usuario(nombre, apellido, mail, clave, rolElegido);
 		
-	    
-	    
        }
-	
 
-	
-	
 	public void verMenu() {
 		if(rol == Rol.CLIENTE) {
+			if (this.cuenta == null) { 
+                JOptionPane.showMessageDialog(null, "No se encontró una cuenta asociada.");
+                return;
+           }
+			
 	        String[] opciones = {
 	                "Depositar",
 	                "Retirar",
 	                "Transferir",            
-	                "Mostrar saldo",
+	                "Ver saldo",
 	                "Salir"
 	        };
 
@@ -133,7 +84,7 @@ public class Usuario{
 
 	            elegido = JOptionPane.showOptionDialog(
 	                    null,
-	                    "Informacion Personal: " + nombre + " " + apellido + "\n" + "CVU: 67" ,
+	                    "Informacion Personal: " + nombre + " " + apellido + "\n" + "CVU: " + this.cuenta.getCVU() + "\n" + "Token: " + this.cuenta.getToken() ,
 	                    "Interfaz Cliente",
 	                    0,
 	                    0,
@@ -145,16 +96,26 @@ public class Usuario{
 	            switch (elegido) {
 
 	                case 0: // depositar
-	                    
+	                    this.cuenta.depositar("Ingrese el monto a depositar: ");
+	                    break;
 	                case 1: // retirar                          
-
+	                	this.cuenta.retirar("Ingrese el monto a retirar: ");
+	                	break;
 	                case 2: // esto va a ser transferir But nel lo hice
-
+	                    try {
+	                        String cvuDestinoStr = Validaciones.ValidarString("Ingrese el CVU de la cuenta destino:");
+	                        int cvuDestino = Integer.parseInt(cvuDestinoStr);
+	                        this.cuenta.transferir(cvuDestino, this.bd);
+	                    } catch (NumberFormatException e) {
+	                        JOptionPane.showMessageDialog(null, "CVU inválido.");
+	                    }
+	                    break;
 	                case 3: // show saldo     
-
+	                	this.cuenta.mostrarSaldo();
+	                	break;
 	                case 4: // salir del menu 
 	                default:
-	                    JOptionPane.showMessageDialog(null, "Testing...");
+	                    JOptionPane.showMessageDialog(null, "Saliendo...");
 	                    break;
 	            }	            	        
 	            
@@ -162,10 +123,10 @@ public class Usuario{
 		} else {
 			String[] opciones = {
 	                "Ver Usuarios",
-	                "Test",
-	                "Test",
+	                "Retirar",
+	                "Transferir",
 	                
-	                "Test",
+	                "Ver Saldo",
 	                "Salir"
 	        };
 
@@ -184,32 +145,77 @@ public class Usuario{
 	                    opciones[0]
 	            );
 
+
 	            switch (elegido) {
 
-	                case 0: // ver niggas
-	                	JOptionPane.showMessageDialog(
-	                            null,
-	                            bd.verUsuarios(),
-	                            "Usuarios Registrados",
-	                            JOptionPane.INFORMATION_MESSAGE
-	                        );
-	                case 1: // retirar                          
+                case 0: // ver niggas
+                	JOptionPane.showMessageDialog(null, bd.verUsuarios(), "Usuarios Registrados", JOptionPane.INFORMATION_MESSAGE);
+                	break;
+                case 1: // Antes era Retirar, ahora es "Gestionar Cuentas"
+                	JOptionPane.showMessageDialog(null, "ADMIN: Funcionalidad de gestión no implementada.");
+                	break;
+                case 2: // Antes era Transferir
+                    JOptionPane.showMessageDialog(null, "ADMIN: Funcionalidad de reportes no implementada.");
+                    break;
 
-	                case 2: // esto va a ser transferir But nel lo hice
+                case 3: // Antes era Ver Saldo
+                	JOptionPane.showMessageDialog(null, "ADMIN: Funcionalidad de logs no implementada.");
+                	break;
 
-	                case 3: // show saldo     
-
-	                case 4: // salir del menu 
-	                default:
-	                    JOptionPane.showMessageDialog(null, "Testing...");
-	                    break;
-	            }	            	        
-	            
+                case 4: // salir del menu 
+                default:
+                    JOptionPane.showMessageDialog(null, "Saliendo...");
+                    break;
+                    }
+	            }
 	        }
-			
-		}
-		
 	}
 	
+	public String getNombre() {
+		return this.nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getApellido() {
+		return this.apellido;
+	}
+
+	public void setApellido(String apellido) {
+		this.apellido = apellido;
+	}
+
+	public String getClave() {
+		return this.clave;
+	}
+
+	public void setClave(String clave) {
+		this.clave = clave;
+	}
+
+	public Rol getRol() {
+		return this.rol;
+	}
 	
+	public void setRol(Rol rol) {
+		this.rol = rol;
+	}
+	
+	public String getMail() {
+		return this.mail;
+	}
+
+	public void setMail(String mail) {
+		this.mail = mail;
+	}
+	
+	//cada usuario tiene su registro en bd, esto es para que lo pueda ver el admin
+	public void setBaseDeDatos(BaseDeDatos base) {
+	    this.bd = base;
+	    if (this.rol == Rol.CLIENTE) {
+            this.cuenta = bd.buscarCuentaPorUsuario(this);
+            }
+	    }
 }

@@ -8,7 +8,6 @@ public abstract class Validaciones {
 		String dato;
 		do {
 			dato = JOptionPane.showInputDialog(mensaje);
-
 			if (dato.isEmpty()) {
 				JOptionPane.showMessageDialog(null, "Error");
 			}
@@ -43,4 +42,27 @@ public abstract class Validaciones {
         } while (!flag);
        return Double.parseDouble(dato);
     }
+	
+	public static String ValidarMail(String mensaje) {
+		String dato;
+		do {
+			dato = JOptionPane.showInputDialog(mensaje);
+			if (dato.isEmpty() || !dato.endsWith(".com") || !dato.contains("@")) {
+				JOptionPane.showMessageDialog(null, "Mail inválido.");
+			}
+		} while (dato.isEmpty() || !dato.endsWith(".com") || !dato.contains("@"));
+		return dato;
+	}
+	
+	public static String ValidarClave(String mensaje) {
+		String dato;
+		int min = 8;
+		do {
+			dato = JOptionPane.showInputDialog(mensaje);
+			if (dato.isEmpty() || dato.length() < min) {
+				JOptionPane.showMessageDialog(null, "Clave inválida.");
+			}
+		} while (dato.isEmpty() || dato.length() < min);
+		return dato;
+	}
 }
