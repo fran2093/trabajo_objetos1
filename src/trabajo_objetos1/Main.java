@@ -8,19 +8,18 @@ public class Main {
        	   	
     	BaseDeDatos bd = new BaseDeDatos();
 
-    	JOptionPane.showMessageDialog(
-                null, 
-                bd.listarCuentasConCVU(), 
-                "CVUs para Testing", 
-                JOptionPane.INFORMATION_MESSAGE
-            );
     	// registro de usuario
     	Usuario u = Usuario.register();
-    	// guardar user en la bd
-    	bd.agregarUsuarioYCuenta(u);
-    	u.setBaseDeDatos(bd);
-    	u.verMenu();
+    	
+    	if (u != null) {
+            // si el usuario no está vacio sigue como deberia
+            bd.agregarUsuarioYCuenta(u); 
+            u.setBaseDeDatos(bd); 
+            u.verMenu();
+        } else {
+            // si el usuario cancela simplemente termina la ejecución.
+            JOptionPane.showMessageDialog(null, "Registro cancelado, saliendo de Umbrella.", "UMBRELLA WALLET", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
-  
-    
 }
+

@@ -22,28 +22,37 @@ public class Usuario{
 	}
 
 	public static Usuario register() {
-		JOptionPane.showMessageDialog(
-			    null,
-			    "💠 UMBRELLA WALLET 💠\n\n"
-			  + "¡Bienvenido!\n"
-			  + "Registrate para formar parte de nuestra plataforma.\n\n"
-			  + "✔ Cuentas Corrientes\n"
-			  + "✔ Cajas de Ahorro\n"
-			  + "✔ Intereses y Beneficios\n"
-			  + "Comenzá a operar de manera fácil y segura."
-			);
 
-		String nombre = Validaciones.ValidarString("Ingrese Nombre: ");
+	    JOptionPane.showMessageDialog(
+	            null,
+	            "💠 UMBRELLA WALLET 💠\n\n"
+	          + "Bienvenido\n"
+	          + "Registrate para formar parte de nuestra plataforma.\n\n"
+	          + "✔ Descuentos en Productos Umbrella\n"
+	          + "✔ Alta seguridad\n"
+	          + "✔ Intereses y Beneficios\n"
+	          + "Comenzá a operar de manera fácil y segura.",
+	          "@UmbrellaCorp", 
+	          JOptionPane.INFORMATION_MESSAGE );
+
+		String nombre = Validaciones.ValidarString("Ingrese nombre: ");
+		if (nombre == null) { return null; }
+		
 		String apellido = Validaciones.ValidarString("Ingrese su apellido: ");
-		String mail = Validaciones.ValidarMail("Ingrese su mail: ");
-		String clave = Validaciones.ValidarClave("Ingrese su clave: ");
+		if (apellido == null) { return null; }
+		
+		String mail = Validaciones.ValidarMail("Ingrese su mail (Gmail): ");
+		if (mail == null) { return null; }
+		
+		String clave = Validaciones.ValidarClave("Ingrese su clave (Minimo 8 caracteres): ");
+		if (clave == null) { return null; }
 		
 	    String[] roles = {"Cliente", "Administrador"};
 		
 		int opcion = JOptionPane.showOptionDialog(
 	            null,
 	            "Seleccione su rol:",
-	            "Registrar Usuario",
+	            "Registrar usuario",
 	            0,
 	            0,
 	            null,
@@ -70,104 +79,136 @@ public class Usuario{
                 return;
            }
 			
-	        String[] opciones = {
-	                "Depositar",
-	                "Retirar",
-	                "Transferir",            
-	                "Ver saldo",
-	                "Salir"
-	        };
+			String[] opciones = {
+		            "Depositar",
+		            "Retirar",
+		            "Transferir",
+		            "Invertir",
+		            "Rendimientos",
+		            "Historial transacciones",
+		            "Simular días",
+		            "Salir"
+		        };
 
-	        int elegido = -1;
+		        int elegido = -1;
 
-	        while (elegido != 4) {
+		        while (elegido != 7) { 
 
-	            elegido = JOptionPane.showOptionDialog(
-	                    null,
-	                    "Informacion Personal: " + nombre + " " + apellido + "\n" + "CVU: " + this.cuenta.getCVU() + "\n" + "Token: " + this.cuenta.getToken() ,
-	                    "Interfaz Cliente",
-	                    0,
-	                    0,
-	                    null,
-	                    opciones,
-	                    opciones[0]
-	            );
+		      
+		        	
+		            elegido = JOptionPane.showOptionDialog(
+		                null,
+		                "Informacion personal: " + nombre + " " + apellido + "\n" + 
+		                "CVU: " + this.cuenta.getCVU() + "\n" + 
+		                "Token: " + this.cuenta.getToken() + "\n" + "Saldo actual: $" + String.format("%.2f", this.cuenta.getSaldo())+ "\nSaldo actual invertido: $" + String.format("%.2f", this.cuenta.getSaldoInvertido()),
+		                "Interfaz cliente - UMBRELLA CLIENT", 
+		                0,
+		                0,
+		                null,
+		                opciones,
+		                opciones[0]
+		            );
 
-	            switch (elegido) {
+		            switch (elegido) {
 
-	                case 0: // depositar
-	                    this.cuenta.depositar("Ingrese el monto a depositar: ");
-	                    break;
-	                case 1: // retirar                          
-	                	this.cuenta.retirar("Ingrese el monto a retirar: ");
-	                	break;
-	                case 2: // esto va a ser transferir But nel lo hice
-	                    try {
-	                        String cvuDestinoStr = Validaciones.ValidarString("Ingrese el CVU de la cuenta destino:");
-	                        int cvuDestino = Integer.parseInt(cvuDestinoStr);
-	                        this.cuenta.transferir(cvuDestino, this.bd);
-	                    } catch (NumberFormatException e) {
-	                        JOptionPane.showMessageDialog(null, "CVU inválido.");
-	                    }
-	                    break;
-	                case 3: // show saldo     
-	                	this.cuenta.mostrarSaldo();
-	                	break;
-	                case 4: // salir del menu 
-	                default:
-	                    JOptionPane.showMessageDialog(null, "Saliendo...");
-	                    break;
-	            }	            	        
+		                case 0: // depositar
+		                    this.cuenta.depositar("Ingrese el monto a depositar: ");
+		                    break;
+		                    
+		                case 1: // retirar
+		                    this.cuenta.retirar("Ingrese el monto a retirar: ");
+		                    break;
+		                    
+		                case 2: // transferir
+		                    try {
+		                        String cvuDestinoStr = Validaciones.ValidarString("Ingrese el CVU de la cuenta destino:");
+		                        int cvuDestino = Integer.parseInt(cvuDestinoStr);
+           
+		                        this.cuenta.transferir(cvuDestino, this.bd);
+		                        
+		                    } catch (NumberFormatException e) {
+		                        JOptionPane.showMessageDialog(
+		                            null, 
+		                            "Operacion fallida, CVU invalido, debe ser un número.", 
+		                            "Error de transferencia", 
+		                            JOptionPane.ERROR_MESSAGE
+		                        );
+		                    }
+		                    break;
+		                case 3: 
+		                	this.cuenta.invertir("Ingrese el monto a invertir: ");
+		                	break;
+		                case 4: // registro rendimientos de inversión
+		                    this.cuenta.mostrarRendimiento();
+		                    break;           
+		                case 5: //hist transacciones
+		                	this.cuenta.getHistorialTransacciones();
+		                	break;
+		                case 6: // simular dias
+		                	this.bd.simularDias();
+		                	break;
+		                case 7: // quit
+		                	JOptionPane.showMessageDialog(null, "Saliendo...");
+		                	break;
+		                default:
+		                	elegido = 7; 
+		                	JOptionPane.showMessageDialog(null, "Saliendo...");
+		                    break;              	     
+		    }            	        
 	            
 	        }
 		} else {
+			
 			String[] opciones = {
 	                "Ver Usuarios",
-	                "Retirar",
-	                "Transferir",
-	                
-	                "Ver Saldo",
-	                "Salir"
+	                "Ver Administradores",
+	                "Salir" 
 	        };
 
-	        int elegido = -1;
+	int elegido = -1;
+	
+	while (elegido != 2) { 
 
-	        while (elegido != 4) {
+	    elegido = JOptionPane.showOptionDialog(
+	            null,
+	            "Informacion Personal: " + nombre + " " + apellido + "\n" + "Correo Umbrella: " + nombre + "admin.umbrella@umbrella.com",
+	            "Interfaz Administrador - UMBRELLA ADMIN",
+	            0,
+	            0,
+	            null,
+	            opciones,
+	            opciones[0]
+	    );
+	    switch (elegido) {
 
-	            elegido = JOptionPane.showOptionDialog(
-	                    null,
-	                    "Informacion Personal: " + nombre + " " + apellido + "\n" + "CVU: 67" ,
-	                    "Interfaz Administrador",
-	                    0,
-	                    0,
-	                    null,
-	                    opciones,
-	                    opciones[0]
-	            );
-
-
-	            switch (elegido) {
-
-                case 0: // ver niggas
-                	JOptionPane.showMessageDialog(null, bd.verUsuarios(), "Usuarios Registrados", JOptionPane.INFORMATION_MESSAGE);
-                	break;
-                case 1: // Antes era Retirar, ahora es "Gestionar Cuentas"
-                	JOptionPane.showMessageDialog(null, "ADMIN: Funcionalidad de gestión no implementada.");
-                	break;
-                case 2: // Antes era Transferir
-                    JOptionPane.showMessageDialog(null, "ADMIN: Funcionalidad de reportes no implementada.");
-                    break;
-
-                case 3: // Antes era Ver Saldo
-                	JOptionPane.showMessageDialog(null, "ADMIN: Funcionalidad de logs no implementada.");
-                	break;
-
-                case 4: // salir del menu 
-                default:
-                    JOptionPane.showMessageDialog(null, "Saliendo...");
-                    break;
-                    }
-	            }
+	        case 0: // ver usuarios
+	              	JOptionPane.showMessageDialog(
+	                        null, 
+	                        bd.listarCuentasConCVU(), 
+	                        "Centro de Cuentas - @UMBRELLA", 
+	                        JOptionPane.INFORMATION_MESSAGE
+	                    );
+	        	break;
+	        case 1: // ver admins 
+	        	JOptionPane.showMessageDialog(
+	                    null, "--- Data Base (Administradores Umbrella) ---\n\n" +
+	                            "Alice Johnson\n" +
+	                            "Mail: alice.j@umbrella.com\n\n" +
+	                            "James Rodriguez\n" +
+	                            "Mail: j.rodriguez@umbrella.com", 
+	                    "Centro de Cuentas - @UMBRELLA", 
+	                    JOptionPane.INFORMATION_MESSAGE
+	                );
+	        	break;
+	        case 2:
+	            JOptionPane.showMessageDialog(null, "Saliendo...");
+	            break;
+	        default: 
+	            elegido = 2; 
+	            JOptionPane.showMessageDialog(null, "Saliendo...");
+	            break;
+	    }
+	}
 	        }
 	}
 	
@@ -206,10 +247,12 @@ public class Usuario{
 	public String getMail() {
 		return this.mail;
 	}
-
+	
 	public void setMail(String mail) {
 		this.mail = mail;
 	}
+	
+	
 	
 	//cada usuario tiene su registro en bd, esto es para que lo pueda ver el admin
 	public void setBaseDeDatos(BaseDeDatos base) {
@@ -217,5 +260,9 @@ public class Usuario{
 	    if (this.rol == Rol.CLIENTE) {
             this.cuenta = bd.buscarCuentaPorUsuario(this);
             }
+	    
+	    
+	    
+	    
 	    }
 }

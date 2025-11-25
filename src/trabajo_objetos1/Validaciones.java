@@ -5,15 +5,20 @@ import javax.swing.JOptionPane;
 public abstract class Validaciones {
 
 	public static String ValidarString(String mensaje) {
-		String dato;
-		do {
-			dato = JOptionPane.showInputDialog(mensaje);
-			if (dato.isEmpty()) {
-				JOptionPane.showMessageDialog(null, "Error");
-			}
-		} while (dato.isEmpty());
-		return dato;
-	}
+        String dato;
+        do {
+            dato = JOptionPane.showInputDialog(mensaje);
+            
+            if (dato == null) { return null;}
+            
+            if (dato == null || dato.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Error: Debe ingresar un caracter válido.");
+            }
+        } while (dato == null || dato.trim().isEmpty());
+        
+       
+        return normalizarRegistro(dato); 
+    }
 
 	public static double ValidarDouble(String mensaje) {
 		
@@ -47,6 +52,9 @@ public abstract class Validaciones {
 		String dato;
 		do {
 			dato = JOptionPane.showInputDialog(mensaje);
+            
+			if (dato == null) { return null;}
+			
 			if (dato.isEmpty() || !dato.endsWith(".com") || !dato.contains("@")) {
 				JOptionPane.showMessageDialog(null, "Mail inválido.");
 			}
@@ -59,10 +67,26 @@ public abstract class Validaciones {
 		int min = 8;
 		do {
 			dato = JOptionPane.showInputDialog(mensaje);
+			
+            if (dato == null) { return null;}
+			
 			if (dato.isEmpty() || dato.length() < min) {
 				JOptionPane.showMessageDialog(null, "Clave inválida.");
 			}
 		} while (dato.isEmpty() || dato.length() < min);
 		return dato;
+	}
+	
+	//para normalizar los caracteres de los users al registrarse
+	public static String normalizarRegistro(String texto) {
+	    if (texto == null || texto.trim().isEmpty()) {
+	        return texto;
+	    }
+	    
+	    // todo a minúsculas
+	    String limpio = texto.trim().toLowerCase();
+	    
+	    // primera letra en mayus + el resto de la caden on the beat
+	    return limpio.substring(0, 1).toUpperCase() + limpio.substring(1);
 	}
 }

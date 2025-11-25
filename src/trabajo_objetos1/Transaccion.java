@@ -35,16 +35,15 @@ public class Transaccion {
     public String getDetalle() {
     	//con este formatter cambiamos como se terminará mostrando la fecha y hora de la transaccion en cuestion, quedando mas prolijo y legible.
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-        String detalle = "--- DETALLE DE UMBRELLA TRANSACCIÓN ---\n" +
-                         "Tipo: " + this.tipo.name() + "\n" +
+        String detalle = "Tipo: " + this.tipo.name() + "\n" +
                          //con el string format logramos que solo se muestren dos decimales de la transaccion en cuestion, ahorrandonos el problema de mostrar numeros excesivamente largos o sin redondear.
                          "Monto: $" + String.format("%.2f", this.monto) + "\n" +
                          "Fecha y hora: " + this.fechaHora.format(formatter) + "\n" +
-                         "CVU Origen: " + this.CVUorigen + "\n";
+                         "CVU origen: " + this.CVUorigen + "\n";
         
         //en el caso de ser una transferencia mostramos tambien el detalle de a qué cuenta se ha transferido, sino este bloque se omite
         if (this.CVUdestino != 0) {
-            detalle += "CVU Destino: " + this.CVUdestino + "\n";
+            detalle += "CVU destino: " + this.CVUdestino + "\n";
         }
         
         return detalle;

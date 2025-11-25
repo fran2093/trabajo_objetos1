@@ -4,6 +4,8 @@ package trabajo_objetos1;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 public class BaseDeDatos {
 
 	private  List<Usuario> listaUsuarios = new ArrayList<>();
@@ -53,7 +55,7 @@ public class BaseDeDatos {
     
     public String listarCuentasConCVU() {
         StringBuilder sb = new StringBuilder();
-        sb.append("--- CUENTAS REGISTRADAS EN UMBRELLA ---\n\n");
+        sb.append("--- Data Base (Clientes Umbrella) ---\n\n");
 
         for (Cuenta c : listaCuentas) {
             String nombreUsuario = c.getUsuario().getNombre();
@@ -79,4 +81,14 @@ public class BaseDeDatos {
         }
         return sb.toString();
     }
+    
+    public void simularDias() {
+    	int cuentasInversionActualizadas = 0;
+     
+    	for (Cuenta cuenta : listaCuentas) {
+         cuenta.calcularRendimientoDiario();
+         cuentasInversionActualizadas++;
+    	}
+     JOptionPane.showMessageDialog(null, "se ha simulado un día.\n", "Umbrella - simulador de días", JOptionPane.INFORMATION_MESSAGE);
+ }
 }
