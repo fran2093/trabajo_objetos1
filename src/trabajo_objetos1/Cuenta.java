@@ -77,6 +77,58 @@ public class Cuenta {
         return true;
     }
     
+    public boolean rescatarInversion(String mensajeInput) {
+
+        double monto = Validaciones.ValidarDouble(mensajeInput);
+
+        if (monto <= 0) {
+            JOptionPane.showMessageDialog(null, "Monto inválido.");
+            return false;
+        }
+
+        if (!validarToken()) {
+            return false;
+        }
+
+        if (monto > this.saldoInvertido) {
+            JOptionPane.showMessageDialog(null,
+                "No podés rescatar ese monto.\nSaldo invertido: $" + String.format("%.2f", this.saldoInvertido));
+            return false;
+        }
+
+        this.saldoInvertido -= monto;
+        this.saldo += monto;
+
+        JOptionPane.showMessageDialog(null,
+            "Rescate exitoso.\n"
+          + "Monto rescatado: $" + String.format("%.2f", monto) + "\n"
+          + "Saldo disponible: $" + String.format("%.2f", this.saldo) + "\n"
+          + "Saldo invertido: $" + String.format("%.2f", this.saldoInvertido),
+            "Rescate de Inversión", JOptionPane.INFORMATION_MESSAGE);
+
+        return true;
+    }
+
+    public void rescatarTodo() {
+
+        if (this.saldoInvertido <= 0) {
+            JOptionPane.showMessageDialog(null, "No tenés saldo invertido para rescatar.");
+            return;
+        }
+
+        if (!validarToken()) {
+            return;
+        }
+
+        this.saldo += this.saldoInvertido;
+        this.saldoInvertido = 0;
+
+        JOptionPane.showMessageDialog(null,
+            "Rescate total realizado.\nSaldo disponible: $" + String.format("%.2f", this.saldo),
+            "Rescate de Inversión", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    
     public boolean transferir(int cvuDestino, BaseDeDatos bd) {
     	double monto = Validaciones.ValidarDouble("Ingrese el monto a transferir");
     	
